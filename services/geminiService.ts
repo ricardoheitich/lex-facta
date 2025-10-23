@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 import { SYSTEM_INSTRUCTION } from '../constants';
 
 // Assume process.env.API_KEY is available in the environment
-const API_KEY = process.env.API_KEY;
+const apiKey = import.meta.env.VITE_API_KEY;
 
 if (!API_KEY) {
     throw new Error("API_KEY is not available. Please check your environment variables.");
