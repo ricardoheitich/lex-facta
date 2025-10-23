@@ -34,7 +34,7 @@ export const analyzeEvent = async (prompt: string): Promise<string> => {
     
     return text;
 
-  } catch (error)S {
+  } catch (error) {
     console.error("Error during Gemini API call:", error);
     // Isso vai mostrar o erro real na tela
     throw error;
