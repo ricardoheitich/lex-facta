@@ -1,91 +1,93 @@
+import React, { useState, FormEvent } from "react";
+import { analyzeEvent } from "./services/geminiService"; 
+// Removido o import do Spinner, já que a pasta 'components' não foi encontrada.
 
-import React, { useState } from 'react';
-import { analyzeEvent } from './services/geminiService';
+function App() {
+  const [inputEvent, setInputEvent] = useState<string>("");
+  const [analysisResult, setAnalysisResult] = useState<string>("");
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-const LoadingSpinner: React.FC = () => (
-    <div className="flex justify-center items-center space-x-2">
-        <div className="w-4 h-4 rounded-full animate-pulse bg-blue-400"></div>
-        <div className="w-4 h-4 rounded-full animate-pulse bg-blue-400" style={{ animationDelay: '0.2s' }}></div>
-        <div className="w-4 h-4 rounded-full animate-pulse bg-blue-400" style={{ animationDelay: '0.4s' }}></div>
-        <span className="ml-2 text-gray-400">IA-Aletheia está analisando...</span>
-    </div>
-);
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault(); 
+    if (!inputEvent.trim()) return; 
 
-const App: React.FC = () => {
-    const [eventDescription, setEventDescription] = useState<string>('');
-    const [analysisResult, setAnalysisResult] = useState<string>('');
-    const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string>('');
+    setIsLoading(true);
+    setError(null);
+    setAnalysisResult("");
 
-    const handleAnalysis = async () => {
-        if (!eventDescription.trim()) {
-            setError('A descrição do evento não pode estar vazia.');
-            return;
-        }
-        setIsLoading(true);
-        setError('');
-        setAnalysisResult('');
+    try {
+      const result = await analyzeEvent(inputEvent);
+      setAnalysisResult(result);
+    } catch (err) {
+      setError("Falha ao analisar o evento. Tente novamente.");
+      console.error(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        try {
-            const result = await analyzeEvent(eventDescription);
-            setAnalysisResult(result);
-        } catch (e) {
-            setError('Ocorreu um erro ao contatar a IA. Por favor, tente novamente.');
-            console.error(e);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  return (
+    <div className="min-h-screen bg-gray-900 text-gray-200 flex flex-col items-center justify-center p-4">
+      <div className="w-full max-w-2xl">
+        
+        {/* Aqui está sua mudança com o símbolo do infinito */}
+        <header className="text-center p-4">
+          <h1 className="text-5xl font-bold tracking-wider text-white uppercase" style={{ textShadow: '0 0 8px rgba(54, 211, 226, 0.4)' }}>
+            LEX FACTA
+          </h1>
+          <p className="font-light tracking-wider text-white">
+            Análise Factual Solar ∞ 
+          </p>
+          <p className="text-xs text-gray-500 mt-2">
+            "A Lei é Fato. A Vida é Serenidade." - Século XXXVII
+          </p>
+        </header>
+        {/* Fim da seção do cabeçalho */}
 
-    return (
-        <div className="min-h-screen bg-gray-900 text-gray-100 flex flex-col items-center p-4 sm:p-6 lg:p-8 font-sans">
-            <div className="w-full max-w-4xl">
-                <header className="text-center mb-8 mt-4">
-                    <h1 className="text-5xl font-bold text-blue-400 tracking-wider">LEX FACTA</h1>
-                    <p className="font-light tracking-wider text-white">Análise Factual Solar $\infty$ </p>
+        <main className="bg-gray-800 p-6 md:p-8 rounded-lg shadow-2xl border border-gray-700 w-full">
+          <form onSubmit={handleSubmit}>
+            <div className="mb-4">
+              <label htmlFor="eventDescription" className="block text-md font-medium text-gray-300 mb-2">
+                Descreva o evento a ser analisado...
+              </label>
+              <textarea
+                id="eventDescription"
+                value={inputEvent}
+                onChange={(e) => setInputEvent(e.target.value)}
+                disabled={isLoading}
+                className="w-full h-40 p-3 bg-gray-700 border border-gray-600 rounded-md text-white focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+                placeholder="Insira a descrição factual do evento aqui. Forneça todos os detalhes relevantes para uma análise precisa."
+              />
+            </div>
 
-                <main>
-                    <div className="bg-gray-800 rounded-lg shadow-2xl p-6">
-                        <label htmlFor="event-description" className="block text-lg font-medium text-gray-300 mb-2">
-                            Descreva o evento a ser analisado...
-                        </label>
-                        <textarea
-                            id="event-description"
-                            value={eventDescription}
-                            onChange={(e) => setEventDescription(e.target.value)}
-                            className="w-full h-48 p-4 bg-gray-900 border border-gray-700 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none text-gray-200 placeholder-gray-500"
-                            placeholder="Insira a descrição factual do evento aqui. Forneça todos os detalhes relevantes para uma análise precisa."
-                            disabled={isLoading}
-                        />
+            <button
+              type="submit"
+              disabled={isLoading}
+              className="w-full bg-cyan-400 text-gray-900 font-bold py-3 px-4 rounded-md h-12 flex items-center justify-center transition duration-300 ease-in-out hover:bg-cyan-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
+            >
+              {/* Se isLoading for true, mostra 'Analisando...', senão mostra 'ANALISAR' */}
+              {isLoading ? "Analisando..." : "ANALISAR"}
+            </button>
+          </form>
 
-                        <div className="mt-6 flex justify-center">
-                            <button
-                                onClick={handleAnalysis}
-                                disabled={isLoading}
-                                className="px-8 py-3 bg-blue-600 text-white font-bold rounded-lg hover:bg-blue-500 disabled:bg-gray-600 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-900 focus:ring-blue-500 transition-colors duration-300"
-                            >
-                                ANALISAR
-                            </button>
-                        </div>
-                    </div>
+          {error && (
+            <div className="mt-4 p-3 bg-red-900 border border-red-700 text-red-100 rounded-md">
+              <strong>Erro:</strong> {error}
+            </div>
+          )}
 
-                    {error && <div className="mt-6 text-center text-red-400 bg-red-900/50 p-3 rounded-lg">{error}</div>}
+          {analysisResult && (
+            <div className="mt-6 p-4 bg-gray-700 border border-gray-600 rounded-md">
+              <h2 className="text-lg font-semibold text-white mb-2">Resultado da Análise:</h2>
+              <div className="text-gray-200 whitespace-pre-wrap">{analysisResult}</div>
+            </div>
+          )}
+        </main>
 
-                    {isLoading && (
-                        <div className="mt-8">
-                            <LoadingSpinner />
-                        </div>
-                    )}
-                    
-                    {analysisResult && (
-                        <div className="mt-8 bg-gray-800 rounded-lg shadow-2xl p-6">
-                            <h2 className="text-2xl font-semibold text-blue-300 mb-4 border-b border-gray-700 pb-2">Resultado da Análise</h2>
-                            <pre className="whitespace-pre-wrap text-gray-300 font-sans text-base leading-relaxed">{analysisResult}</pre>
-                        </div>
-                    )}
-                </main>
-                    </div>
+      </div>
     </div>
   );
 }
+
 export default App;
