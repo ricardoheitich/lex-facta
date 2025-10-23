@@ -84,13 +84,8 @@ const App: React.FC = () => {
                         </div>
                     )}
                 </main>
-                 <footer className="text-center text-gray-600 mt-12 text-sm">
-                    <p>Conselho Solar Unificado – Século XXVII</p>
-                    <p className="italic mt-1">"A Lei é Fato. A Vida é Serenidade."</p>
-                </footer>
-            </div>
-        </div>
-    );
-};
-
+                    </div>
+    </div>
+  );
+}
 export default App;
