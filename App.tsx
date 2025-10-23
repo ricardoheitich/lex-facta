@@ -1,6 +1,5 @@
 import React, { useState, FormEvent } from "react";
 import { analyzeEvent } from "./services/geminiService"; 
-// Removido o import do Spinner, já que a pasta 'components' não foi encontrada.
 
 function App() {
   const [inputEvent, setInputEvent] = useState<string>("");
@@ -20,8 +19,14 @@ function App() {
       const result = await analyzeEvent(inputEvent);
       setAnalysisResult(result);
     } catch (err) {
-      setError("Falha ao analisar o evento. Tente novamente.");
-      console.error(err);
+      // ESTA É A LINHA QUE MUDAMOS
+      // Em vez de uma mensagem genérica, vamos mostrar o erro real.
+      if (err instanceof Error) {
+        setError(`Erro Detalhado: ${err.message}`);
+      } else {
+        setError("Ocorreu um erro desconhecido.");
+      }
+      console.error(err); // Também registra o erro no console
     } finally {
       setIsLoading(false);
     }
@@ -31,7 +36,6 @@ function App() {
     <div className="min-h-screen bg-gray-900 text-gray-200 flex flex-col items-center justify-center p-4">
       <div className="w-full max-w-2xl">
         
-        {/* Aqui está sua mudança com o símbolo do infinito */}
         <header className="text-center p-4">
           <h1 className="text-5xl font-bold tracking-wider text-white uppercase" style={{ textShadow: '0 0 8px rgba(54, 211, 226, 0.4)' }}>
             LEX FACTA
@@ -43,7 +47,6 @@ function App() {
             "A Lei é Fato. A Vida é Serenidade." - Século XXXVII
           </p>
         </header>
-        {/* Fim da seção do cabeçalho */}
 
         <main className="bg-gray-800 p-6 md:p-8 rounded-lg shadow-2xl border border-gray-700 w-full">
           <form onSubmit={handleSubmit}>
@@ -66,14 +69,13 @@ function App() {
               disabled={isLoading}
               className="w-full bg-cyan-400 text-gray-900 font-bold py-3 px-4 rounded-md h-12 flex items-center justify-center transition duration-300 ease-in-out hover:bg-cyan-300 disabled:bg-gray-600 disabled:cursor-not-allowed"
             >
-              {/* Se isLoading for true, mostra 'Analisando...', senão mostra 'ANALISAR' */}
               {isLoading ? "Analisando..." : "ANALISAR"}
             </button>
           </form>
 
           {error && (
             <div className="mt-4 p-3 bg-red-900 border border-red-700 text-red-100 rounded-md">
-              <strong>Erro:</strong> {error}
+              <strong>{error}</strong>
             </div>
           )}
 
