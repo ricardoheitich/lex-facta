@@ -16,7 +16,7 @@ const genAI = new GoogleGenerativeAI(apiKey);
 // 4. Configura o modelo
 // Nós pegamos o modelo primeiro, com todas as configurações
 const model = genAI.getGenerativeModel({
-  model: "gemini-1.5-pro",
+  model: "gemini-1.5-flash",
   // systemInstruction: SYSTEM_INSTRUCTION, // <-- DESATIVADO PARA O TESTE
   generationConfig: {
     temperature: 0.1,
