@@ -42,8 +42,7 @@ const App: React.FC = () => {
             <div className="w-full max-w-4xl">
                 <header className="text-center mb-8 mt-4">
                     <h1 className="text-5xl font-bold text-blue-400 tracking-wider">LEX FACTA</h1>
-                    <p className="text-xl text-gray-400 mt-2">Análise Factual Solar</p>
-                </header>
+                    <p className="font-light tracking-wider text-white">Análise Factual Solar $\infty$ </p>
 
                 <main>
                     <div className="bg-gray-800 rounded-lg shadow-2xl p-6">
