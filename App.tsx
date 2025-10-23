@@ -38,8 +38,7 @@ function App() {
         
         <header className="text-center p-4">
           <h1 className="text-5xl font-bold tracking-wider text-white uppercase" style={{ textShadow: '0 0 8px rgba(54, 211, 226, 0.4)' }}>
-            LEX FACTA
-          </h1>
+            LEX FACTA v2 </h1>
           <p className="font-light tracking-wider text-white">
             Análise Factual Solar ∞ 
           </p>
