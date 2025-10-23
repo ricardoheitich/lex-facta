@@ -6,9 +6,9 @@ const apiKey = import.meta.env.VITE_API_KEY;
 
 // 2. Precisamos dizer ao Vertex AI qual é o ID do seu projeto
 // Vá para o console.cloud.google.com e copie o "ID do projeto"
-// (NÃO é o nome, é o ID, ex: "lex-facta-app-123456")
+// (NÃO é o nome, é o ID, ex: "nomadic-grid-476018-m3")
 // Se você não souber o ID, use o NOME por enquanto (ex: "Lex Facta App")
-const projectId = "lex-facta-app-123456"; // <-- TROQUE ISSO PELO ID DO SEU PROJETO NOVO
+const projectId = "nomadic-grid-476018-m3"; // <-- TROQUE ISSO PELO ID DO SEU PROJETO NOVO
 
 // 3. Inicializa o Vertex AI
 const vertex_ai = new VertexAI({
