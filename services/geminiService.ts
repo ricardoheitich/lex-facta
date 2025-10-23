@@ -38,6 +38,6 @@ export const analyzeEvent = async (prompt: string): Promise<string> => {
   } catch (error) {
     console.error("Error during Gemini API call:", error);
     // Esta linha joga o erro para o App.tsx, que mostra a mensagem vermelha
-    throw new Error("Failed to get a response from the AI model.");
+    throw error;
   }
 };
